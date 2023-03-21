@@ -1,0 +1,39 @@
+Firstly this codes credit is to Tamerlan Gudabayev
+Full code can be found in the link below:
+https://tamerlan.dev/how-to-create-a-youtube-mp3-player-using-python/
+
+Originally its a Youtube audio player that was reworked for my alarm clock.
+
+Found a couple issues when using the Pafy import.
+
+
+This one took me a couple tries.
+
+First change within the below file:
+
+alarmclockyt\venv\Lib\site-packages\youtube_dl\extractor\youtube.py
+
+In my file found it on line  1794
+
+
+Old
+            'uploader_id': self._search_regex(r'/(?:channel|user)/([^/?&#]+)', owner_profile_url, 'uploader id') if owner_profile_url else None,
+New:
+            'uploader_id': self._search_regex(r'/(?:channel/|user/|@)([^/?&#]+)', owner_profile_url, 'uploader id', default=None),
+
+Second change within the below file:
+
+alarmclockyt\venv\Lib\site-packages\pafy\backend_youtube_dl.py
+
+lines 53 and 54:
+
+Old:
+
+self._likes = self._ydl_info['like_count']
+self._dislikes = self._ydl_info['dislike_count']
+
+New:
+self._likes = self._ydl_info.get('like_count',0)
+self._dislikes = self._ydl_info.get('dislike_count',0)
+
+
